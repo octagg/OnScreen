@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On Screen — Desktop Reference Layer</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange: #FF9922; --peach: #FFCC99; --tan: #FFAA66;
+  --red: #CC4444; --blue: #8899CC; --purple: #AA88CC; --green: #88BBAA;
+  --black: #000; --dim: #080600;
+}
+html { background: var(--black); scroll-behavior: smooth; }
+body { font-family: 'Courier New', Courier, monospace; color: var(--peach); overflow-x: hidden; }
+
+/* ---- LCARS frame ---- */
+#frame { display: grid; grid-template-columns: 110px 1fr; grid-template-rows: 72px 1fr 48px; min-height: 100vh; }
+#elbow-tl { background: var(--orange); border-radius: 0 0 0 40px; }
+#topbar {
+  background: var(--orange); display: flex; align-items: center;
+  padding: 0 28px 0 16px; gap: 12px;
+}
+.tb-title { font-size: 32px; font-weight: 700; color: var(--black); letter-spacing: 0.12em; }
+.tb-sub   { font-size: 9px; color: rgba(0,0,0,0.5); letter-spacing: 0.14em; margin-top: 3px; }
+.tb-pills { margin-left: auto; display: flex; gap: 7px; align-items: center; }
+.tb-pill {
+  height: 26px; padding: 0 14px; border-radius: 13px;
+  font-size: 10px; letter-spacing: 0.08em; font-weight: 700;
+  cursor: pointer; border: none; text-decoration: none;
+  display: flex; align-items: center; font-family: inherit;
+}
+.pill-blue   { background: var(--blue);   color: var(--black); }
+.pill-green  { background: var(--green);  color: var(--black); }
+.pill-purple { background: var(--purple); color: var(--black); }
+.tb-pill:hover { filter: brightness(1.15); }
+
+#sidebar { display: flex; flex-direction: column; gap: 5px; padding: 5px 0; }
+.sb { height: 38px; border-radius: 0 19px 19px 0; display: flex; align-items: center; padding: 0 12px 0 8px; font-size: 7px; letter-spacing: 0.14em; color: var(--black); justify-content: flex-end; cursor: default; user-select: none; font-weight: bold; }
+.sb-sp { flex: 1; }
+.sb-or { background: var(--orange); }
+.sb-pe { background: var(--peach); }
+.sb-ta { background: var(--tan); }
+.sb-re { background: var(--red); }
+.sb-bl { background: var(--blue); }
+.sb-pu { background: var(--purple); }
+.sb-gr { background: var(--green); }
+
+#main { padding: 32px 48px 48px 28px; overflow-y: auto; }
+#elbow-bl { background: var(--orange); border-radius: 0 40px 0 0; }
+#btmbar { background: var(--orange); grid-column: 2; display: flex; align-items: center; padding: 0 28px; gap: 16px; }
+.btm-txt { font-size: 8px; letter-spacing: 0.14em; color: rgba(0,0,0,0.45); }
+.btm-sp  { flex: 1; }
+.blink-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: blink 2.4s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+/* content */
+.hero { max-width: 640px; margin-bottom: 44px; }
+.eyebrow { font-size: 9px; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 10px; }
+.headline { font-size: 48px; font-weight: 700; letter-spacing: 0.06em; line-height: 1.05; color: var(--peach); margin-bottom: 16px; }
+.headline em { color: var(--orange); font-style: normal; }
+.body-txt { font-size: 12px; line-height: 1.85; color: rgba(255,204,153,0.6); max-width: 500px; }
+.origin { font-size: 10px; line-height: 1.8; color: rgba(255,204,153,0.35); margin-top: 12px; font-style: italic; }
+
+.cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; align-items: center; }
+.cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 22px; height: 40px; font-family: inherit;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  border: none; cursor: pointer; text-decoration: none; border-radius: 2px;
+}
+.cta-primary   { background: var(--orange); color: var(--black); }
+.cta-secondary { background: transparent; color: var(--orange); border: 1px solid rgba(255,153,34,0.35); }
+.cta-donate    { background: var(--purple); color: var(--black); }
+.cta:hover     { filter: brightness(1.12); }
+.cta-note { font-size: 8px; color: rgba(255,204,153,0.25); letter-spacing: 0.1em; margin-top: 6px; display: block; }
+
+/* divider */
+.div { display: flex; align-items: center; gap: 5px; margin: 36px 0 24px; }
+.dl { flex:1; height:8px; border-radius:4px; background:var(--orange); opacity:.25; }
+.ds { width:36px; height:8px; border-radius:4px; background:var(--peach); opacity:.4; }
+.dt { width:14px; height:8px; border-radius:4px; background:var(--red); opacity:.5; }
+
+.section-lbl { font-size: 10px; letter-spacing: 0.18em; color: var(--orange); margin-bottom: 14px; font-weight: 700; }
+
+/* panels */
+.panel-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 3px; margin-bottom: 20px; }
+.panel { background: var(--dim); border: 1px solid rgba(255,153,34,0.1); overflow: hidden; }
+.ph { padding: 5px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: var(--black); display: flex; align-items: center; gap: 6px; }
+.ph-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(0,0,0,0.3); flex-shrink: 0; }
+.ph-or { background: var(--orange); }
+.ph-pe { background: var(--peach); }
+.ph-ta { background: var(--tan); }
+.ph-bl { background: var(--blue); }
+.ph-pu { background: var(--purple); }
+.ph-gr { background: var(--green); }
+.ph-re { background: var(--red); }
+.pb { padding: 14px 14px 16px; }
+.pb p, .pb li { font-size: 10px; line-height: 1.9; color: rgba(255,204,153,0.55); }
+.pb ul { list-style: none; }
+.pb li { padding-left: 10px; position: relative; }
+.pb li::before { content:'▸'; position:absolute; left:0; color:var(--orange); }
+
+/* CALLOUT — vanilla / settings note */
+.callout {
+  border: 1px solid rgba(255,153,34,0.2);
+  border-left: 3px solid var(--orange);
+  background: rgba(255,153,34,0.04);
+  padding: 14px 18px; margin-bottom: 20px;
+  max-width: 640px;
+}
+.callout-title { font-size: 9px; letter-spacing: 0.16em; color: var(--orange); margin-bottom: 6px; }
+.callout-body  { font-size: 10px; line-height: 1.8; color: rgba(255,204,153,0.55); }
+.callout-body code { background: rgba(255,153,34,0.1); padding: 1px 5px; border-radius: 2px; color: var(--orange); font-family: inherit; font-size: 9px; letter-spacing: 0.06em; }
+
+/* ============================================================
+   UI PREVIEW MOCKUPS — inline SVG-based
+   ============================================================ */
+.preview-section { margin-bottom: 40px; }
+.preview-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+.preview-wrap { flex: 1; min-width: 260px; max-width: 420px; }
+.preview-label { font-size: 8px; letter-spacing: 0.14em; color: rgba(255,153,34,0.45); margin-bottom: 6px; }
+
+/* mockup frame */
+.mock {
+  width: 100%; aspect-ratio: 16/10;
+  border-radius: 3px; overflow: hidden;
+  border: 1px solid rgba(255,153,34,0.15);
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+}
+
+/* theme strip */
+.theme-strip { display: flex; gap: 4px; margin-top: 10px; flex-wrap: wrap; }
+.theme-chip {
+  height: 22px; padding: 0 10px; border-radius: 11px;
+  font-size: 8px; letter-spacing: 0.1em; font-weight: 700;
+  display: flex; align-items: center; gap: 5px;
+  border: 1px solid rgba(255,255,255,0.08); cursor: default;
+}
+.tc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* stat strip */
+.stat-strip { display: flex; gap: 18px; margin-top: 8px; }
+.stat { font-size: 8px; letter-spacing: 0.1em; color: rgba(255,204,153,0.25); }
+.stat span { color: var(--orange); margin-left: 5px; }
+</style>
+</head>
+<body>
+<div id="frame">
+  <div id="elbow-tl"></div>
+  <div id="topbar">
+    <div>
+      <div class="tb-title">ON SCREEN</div>
+      <div class="tb-sub">DESKTOP REFERENCE LAYER &nbsp;//&nbsp; OPEN SOURCE &nbsp;//&nbsp; FREE</div>
+    </div>
+    <div class="tb-pills">
+      <a class="tb-pill pill-blue"   href="https://github.com/octagg/OnScreen" target="_blank">GITHUB</a>
+      <a class="tb-pill pill-green"  href="#download">DOWNLOAD</a>
+      <a class="tb-pill pill-purple" href="#donate" onclick="chirp()">DONATE</a>
+    </div>
+  </div>
+
+  <div id="sidebar">
+    <div class="sb sb-or">SYS</div>
+    <div class="sb sb-pe">REF</div>
+    <div class="sb sb-ta">UI</div>
+    <div class="sb-sp"></div>
+    <div class="sb sb-bl">v1.0</div>
+    <div class="sb sb-pu">LNX</div>
+    <div class="sb sb-gr">X11</div>
+    <div class="sb sb-re">OSS</div>
+  </div>
+
+  <div id="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="eyebrow">ON SCREEN // BUILD 001 // LINUX X11</div>
+      <div class="headline">YOUR DESKTOP,<br><em>ANNOTATED.</em></div>
+      <div class="body-txt">
+        An interactive pinboard that lives at the OS desktop layer — behind your windows, always available, never in the way.
+        Pin notes, reference images, hotkey maps, and shortcuts directly onto your desktop.
+        Toggle edit mode and rearrange. Switch to view mode and it disappears into the background.
+      </div>
+      <div class="origin">"On screen." — what the captain says when the lieutenant says something is going on.</div>
+      <div class="cta-row" id="download">
+        <a class="cta cta-primary"   href="onscreen.html" onclick="chirp()">↓ DOWNLOAD v1.0</a>
+        <a class="cta cta-secondary" href="https://github.com/octagg/OnScreen" target="_blank">VIEW SOURCE</a>
+        <a class="cta cta-donate"    href="#donate" id="donate" onclick="chirp()">♥ DONATE</a>
+      </div>
+      <span class="cta-note">FREE AND OPEN SOURCE — MIT LICENSE — DONATIONS KEEP IT MAINTAINED</span>
+    </div>
+
+    <!-- CALLOUT — not a Trek fan -->
+    <div class="callout">
+      <div class="callout-title">NOT A TREK FAN?</div>
+      <div class="callout-body">
+        The LCARS aesthetic is the default — it's what On Screen looks like out of the box. But it's one of four bundled themes and takes about 10 seconds to change.
+        Open settings with <code>,</code> → THEMES tab → pick <code>VANILLA</code>, <code>PAPER</code>, or <code>TERMINAL</code>.
+        Or build your own with the color picker. Everything is configurable.
+        The app is the function — the look is just a starting point.
+      </div>
+    </div>
+
+    <!-- UI PREVIEW -->
+    <div class="preview-section">
+      <div class="section-lbl">WHAT IT ACTUALLY LOOKS LIKE</div>
+
+      <div class="preview-row">
+
+        <!-- LCARS mockup -->
+        <div class="preview-wrap">
+          <div class="preview-label">LCARS — DEFAULT</div>
+          <div class="mock">
+            <svg viewBox="0 0 420 263" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <!-- bg -->
+              <rect width="420" height="263" fill="#000"/>
+              <!-- grid -->
+              <defs>
+                <pattern id="g1" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M20 0 L0 0 0 20" fill="none" stroke="rgba(255,153,34,0.07)" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="420" height="263" fill="url(#g1)"/>
+              <!-- toolbar -->
+              <rect width="420" height="18" fill="#0a0800"/>
+              <rect width="420" height="2" y="18" fill="#FF9922"/>
+              <!-- elbow -->
+              <rect width="70" height="20" fill="#FF9922" rx="0"/>
+              <ellipse cx="70" cy="20" rx="12" ry="12" fill="#000"/>
+              <rect x="70" y="0" width="12" height="12" fill="#FF9922"/>
+              <!-- toolbar text -->
+              <text x="8" y="13" fill="#000" font-size="8" font-weight="bold" font-family="monospace" letter-spacing="1">ON SCR</text>
+              <!-- toolbar buttons -->
+              <rect x="76" y="5" width="26" height="10" rx="5" fill="#FF9922"/>
+              <text x="89" y="13" fill="#000" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">EDIT●</text>
+              <rect x="106" y="5" width="22" height="10" rx="5" fill="#FF9922" opacity=".4"/>
+              <text x="117" y="13" fill="#000" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">+TEXT</text>
+              <rect x="132" y="5" width="28" height="10" rx="5" fill="#FF9922" opacity=".4"/>
+              <text x="146" y="13" fill="#000" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">+IMAGE</text>
+              <rect x="168" y="5" width="32" height="10" rx="5" fill="#FF9922" opacity=".2"/>
+              <text x="184" y="13" fill="#FF9922" font-size="5" font-family="monospace" text-anchor="middle">SETTINGS</text>
+
+              <!-- card 1 — default amber -->
+              <rect x="24" y="30" width="120" height="100" rx="2" fill="#120c00" stroke="rgba(255,153,34,0.25)" stroke-width="0.8" filter="drop-shadow(2px 3px 8px rgba(0,0,0,0.7))"/>
+              <rect x="24" y="30" width="120" height="14" rx="0" fill="rgba(255,153,34,0.12)"/>
+              <rect x="24" y="30" width="120" height="2"  rx="0" fill="rgba(255,153,34,0.12)"/>
+              <rect x="28" y="35" width="18" height="5" rx="2.5" fill="#FF9922" opacity=".55"/>
+              <text x="50" y="40" fill="rgba(255,153,34,0.4)" font-size="4" font-family="monospace" letter-spacing="1">NOTE</text>
+              <rect x="24" y="44" width="120" height="1" fill="rgba(255,153,34,0.12)"/>
+              <text x="28" y="53" fill="#FF9922" font-size="5" font-family="monospace" font-weight="bold" letter-spacing="0.5">ON SCREEN</text>
+              <rect x="24" y="56" width="120" height="1" fill="rgba(255,153,34,0.12)"/>
+              <text x="28" y="66" fill="rgba(255,204,153,0.7)" font-size="4.5" font-family="monospace">Drag from header strip</text>
+              <text x="28" y="74" fill="rgba(255,204,153,0.7)" font-size="4.5" font-family="monospace">Resize from corner</text>
+              <text x="28" y="82" fill="rgba(255,204,153,0.7)" font-size="4.5" font-family="monospace">E — edit mode</text>
+              <text x="28" y="90" fill="rgba(255,204,153,0.7)" font-size="4.5" font-family="monospace">, — settings</text>
+              <!-- resize handle -->
+              <rect x="137" y="123" width="7" height="7" rx="1" fill="#FF9922" opacity=".7"/>
+
+              <!-- card 2 — blue -->
+              <rect x="160" y="24" width="110" height="95" rx="2" fill="#00101a" stroke="rgba(68,136,187,0.3)" stroke-width="0.8" filter="drop-shadow(2px 3px 8px rgba(0,0,0,0.7))"/>
+              <rect x="160" y="24" width="110" height="14" fill="rgba(68,136,187,0.12)"/>
+              <rect x="164" y="29" width="16" height="5" rx="2.5" fill="#4488bb" opacity=".6"/>
+              <text x="184" y="34" fill="rgba(68,136,187,0.5)" font-size="4" font-family="monospace" letter-spacing="1">NOTE</text>
+              <rect x="160" y="38" width="110" height="1" fill="rgba(68,136,187,0.15)"/>
+              <text x="164" y="47" fill="#4488bb" font-size="5" font-family="monospace" font-weight="bold" letter-spacing="0.5">SHORTCUTS</text>
+              <rect x="160" y="50" width="110" height="1" fill="rgba(68,136,187,0.15)"/>
+              <text x="164" y="60" fill="rgba(255,204,153,0.6)" font-size="4.5" font-family="monospace">E  — edit mode</text>
+              <text x="164" y="68" fill="rgba(255,204,153,0.6)" font-size="4.5" font-family="monospace">T  — new text card</text>
+              <text x="164" y="76" fill="rgba(255,204,153,0.6)" font-size="4.5" font-family="monospace">I  — image by URL</text>
+              <text x="164" y="84" fill="rgba(255,204,153,0.6)" font-size="4.5" font-family="monospace">Del — remove card</text>
+              <rect x="263" y="112" width="7" height="7" rx="1" fill="#FF9922" opacity=".7"/>
+
+              <!-- card 3 — green -->
+              <rect x="60" y="148" width="130" height="88" rx="2" fill="#001a0d" stroke="rgba(68,170,119,0.3)" stroke-width="0.8" filter="drop-shadow(2px 3px 8px rgba(0,0,0,0.7))"/>
+              <rect x="60" y="148" width="130" height="14" fill="rgba(68,170,119,0.1)"/>
+              <rect x="64" y="153" width="16" height="5" rx="2.5" fill="#44aa77" opacity=".6"/>
+              <text x="84" y="158" fill="rgba(68,170,119,0.5)" font-size="4" font-family="monospace" letter-spacing="1">NOTE</text>
+              <rect x="60" y="162" width="130" height="1" fill="rgba(68,170,119,0.15)"/>
+              <text x="64" y="171" fill="#44aa77" font-size="5" font-family="monospace" font-weight="bold">THEMES</text>
+              <rect x="60" y="174" width="130" height="1" fill="rgba(68,170,119,0.15)"/>
+              <text x="64" y="184" fill="rgba(255,204,153,0.6)" font-size="4.5" font-family="monospace">Settings → THEMES tab</text>
+              <text x="64" y="192" fill="rgba(255,204,153,0.6)" font-size="4.5" font-family="monospace">4 bundled + custom builder</text>
+              <text x="64" y="200" fill="rgba(255,204,153,0.6)" font-size="4.5" font-family="monospace">MIX generates random palette</text>
+              <rect x="183" y="229" width="7" height="7" rx="1" fill="#FF9922" opacity=".7"/>
+
+              <!-- selection outline on card 1 -->
+              <rect x="23.5" y="29.5" width="121" height="101" rx="2.5" fill="none" stroke="#FF9922" stroke-width="1.2"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- VANILLA mockup -->
+        <div class="preview-wrap">
+          <div class="preview-label">VANILLA — MINIMAL DARK</div>
+          <div class="mock">
+            <svg viewBox="0 0 420 263" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <rect width="420" height="263" fill="#141414"/>
+              <defs>
+                <pattern id="g2" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M20 0 L0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="420" height="263" fill="url(#g2)"/>
+              <rect width="420" height="18" fill="#0a0a0a"/>
+              <rect width="420" height="2" y="18" fill="#d4d4d4"/>
+              <rect width="70" height="20" fill="#d4d4d4"/>
+              <ellipse cx="70" cy="20" rx="12" ry="12" fill="#141414"/>
+              <rect x="70" y="0" width="12" height="12" fill="#d4d4d4"/>
+              <text x="8" y="13" fill="#000" font-size="8" font-weight="bold" font-family="monospace" letter-spacing="1">ON SCR</text>
+              <rect x="76" y="5" width="26" height="10" rx="5" fill="#d4d4d4"/>
+              <text x="89" y="13" fill="#000" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">EDIT●</text>
+              <rect x="106" y="5" width="22" height="10" rx="5" fill="#d4d4d4" opacity=".4"/>
+              <text x="117" y="13" fill="#000" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">+TEXT</text>
+
+              <rect x="24" y="30" width="120" height="90" rx="2" fill="#1c1c1c" stroke="rgba(180,180,180,0.15)" stroke-width="0.8" filter="drop-shadow(1px 2px 6px rgba(0,0,0,0.5))"/>
+              <rect x="24" y="30" width="120" height="13" fill="rgba(180,180,180,0.07)"/>
+              <rect x="28" y="34" width="16" height="5" rx="2.5" fill="#d4d4d4" opacity=".45"/>
+              <text x="48" y="39" fill="rgba(180,180,180,0.4)" font-size="4" font-family="monospace">NOTE</text>
+              <rect x="24" y="43" width="120" height="1" fill="rgba(180,180,180,0.1)"/>
+              <text x="28" y="51" fill="#d4d4d4" font-size="5" font-family="monospace" font-weight="bold">REFERENCE</text>
+              <rect x="24" y="53" width="120" height="1" fill="rgba(180,180,180,0.1)"/>
+              <text x="28" y="63" fill="rgba(200,200,200,0.6)" font-size="4.5" font-family="monospace">Clean minimal look</text>
+              <text x="28" y="71" fill="rgba(200,200,200,0.6)" font-size="4.5" font-family="monospace">No color distractions</text>
+              <text x="28" y="79" fill="rgba(200,200,200,0.6)" font-size="4.5" font-family="monospace">Full function intact</text>
+
+              <rect x="158" y="24" width="115" height="80" rx="2" fill="#1c1c1c" stroke="rgba(180,180,180,0.12)" stroke-width="0.8" filter="drop-shadow(1px 2px 6px rgba(0,0,0,0.5))"/>
+              <rect x="158" y="24" width="115" height="13" fill="rgba(180,180,180,0.06)"/>
+              <rect x="162" y="28" width="16" height="5" rx="2.5" fill="#d4d4d4" opacity=".45"/>
+              <text x="182" y="33" fill="rgba(180,180,180,0.4)" font-size="4" font-family="monospace">IMAGE</text>
+              <rect x="158" y="37" width="115" height="1" fill="rgba(180,180,180,0.08)"/>
+              <text x="162" y="45" fill="#d4d4d4" font-size="5" font-family="monospace" font-weight="bold">DIAGRAM</text>
+              <rect x="158" y="47" width="115" height="1" fill="rgba(180,180,180,0.08)"/>
+              <rect x="162" y="51" width="107" height="48" fill="rgba(255,255,255,0.04)" stroke="rgba(180,180,180,0.08)" stroke-width="0.5"/>
+              <text x="215" y="79" fill="rgba(180,180,180,0.2)" font-size="8" font-family="monospace" text-anchor="middle">[ image ]</text>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="preview-row" style="margin-top:12px;">
+
+        <!-- PAPER mockup -->
+        <div class="preview-wrap">
+          <div class="preview-label">PAPER — LIGHT / WARM</div>
+          <div class="mock">
+            <svg viewBox="0 0 420 263" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <rect width="420" height="263" fill="#ede8e0"/>
+              <defs>
+                <pattern id="g3" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M20 0 L0 0 0 20" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="420" height="263" fill="url(#g3)"/>
+              <rect width="420" height="18" fill="#d6d0c6"/>
+              <rect width="420" height="2" y="18" fill="#2a2520"/>
+              <rect width="70" height="20" fill="#2a2520"/>
+              <ellipse cx="70" cy="20" rx="12" ry="12" fill="#ede8e0"/>
+              <rect x="70" y="0" width="12" height="12" fill="#2a2520"/>
+              <text x="8" y="13" fill="#ede8e0" font-size="8" font-weight="bold" font-family="monospace" letter-spacing="1">ON SCR</text>
+              <rect x="76" y="5" width="26" height="10" rx="5" fill="#2a2520"/>
+              <text x="89" y="13" fill="#ede8e0" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">EDIT●</text>
+              <rect x="106" y="5" width="22" height="10" rx="5" fill="#2a2520" opacity=".4"/>
+              <text x="117" y="13" fill="#ede8e0" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">+TEXT</text>
+
+              <rect x="24" y="30" width="130" height="100" rx="2" fill="#faf7f2" stroke="rgba(42,37,32,0.15)" stroke-width="0.8" filter="drop-shadow(1px 2px 8px rgba(0,0,0,0.15))"/>
+              <rect x="24" y="30" width="130" height="13" fill="rgba(42,37,32,0.07)"/>
+              <rect x="28" y="34" width="16" height="5" rx="2.5" fill="#2a2520" opacity=".45"/>
+              <text x="48" y="39" fill="rgba(42,37,32,0.4)" font-size="4" font-family="monospace">NOTE</text>
+              <rect x="24" y="43" width="130" height="1" fill="rgba(42,37,32,0.1)"/>
+              <text x="28" y="51" fill="#2a2520" font-size="5" font-family="monospace" font-weight="bold">RECIPE NOTES</text>
+              <rect x="24" y="53" width="130" height="1" fill="rgba(42,37,32,0.1)"/>
+              <text x="28" y="63" fill="rgba(42,37,32,0.65)" font-size="4.5" font-family="monospace">Mise en place first</text>
+              <text x="28" y="71" fill="rgba(42,37,32,0.65)" font-size="4.5" font-family="monospace">Reduce heat after sear</text>
+              <text x="28" y="79" fill="rgba(42,37,32,0.65)" font-size="4.5" font-family="monospace">Rest 10min before cut</text>
+
+              <rect x="168" y="26" width="110" height="90" rx="2" fill="#faf7f2" stroke="rgba(42,37,32,0.12)" stroke-width="0.8" filter="drop-shadow(1px 2px 8px rgba(0,0,0,0.12))"/>
+              <rect x="168" y="26" width="110" height="13" fill="rgba(42,37,32,0.06)"/>
+              <rect x="172" y="30" width="16" height="5" rx="2.5" fill="#2a2520" opacity=".45"/>
+              <text x="192" y="35" fill="rgba(42,37,32,0.35)" font-size="4" font-family="monospace">NOTE</text>
+              <rect x="168" y="39" width="110" height="1" fill="rgba(42,37,32,0.08)"/>
+              <text x="172" y="47" fill="#2a2520" font-size="5" font-family="monospace" font-weight="bold">MARKET LIST</text>
+              <rect x="168" y="49" width="110" height="1" fill="rgba(42,37,32,0.08)"/>
+              <text x="172" y="59" fill="rgba(42,37,32,0.65)" font-size="4.5" font-family="monospace">Saffron · Shallots</text>
+              <text x="172" y="67" fill="rgba(42,37,32,0.65)" font-size="4.5" font-family="monospace">Bone-in short rib</text>
+              <text x="172" y="75" fill="rgba(42,37,32,0.65)" font-size="4.5" font-family="monospace">Aged balsamic</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- TERMINAL mockup -->
+        <div class="preview-wrap">
+          <div class="preview-label">TERMINAL — GREYSCALE MONO</div>
+          <div class="mock">
+            <svg viewBox="0 0 420 263" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <rect width="420" height="263" fill="#080808"/>
+              <defs>
+                <pattern id="g4" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M20 0 L0 0 0 20" fill="none" stroke="rgba(120,120,120,0.05)" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="420" height="263" fill="url(#g4)"/>
+              <rect width="420" height="18" fill="#040404"/>
+              <rect width="420" height="2" y="18" fill="#888"/>
+              <rect width="70" height="20" fill="#888"/>
+              <ellipse cx="70" cy="20" rx="12" ry="12" fill="#080808"/>
+              <rect x="70" y="0" width="12" height="12" fill="#888"/>
+              <text x="8" y="13" fill="#000" font-size="8" font-weight="bold" font-family="monospace" letter-spacing="1">ON SCR</text>
+              <rect x="76" y="5" width="26" height="10" rx="5" fill="#888"/>
+              <text x="89" y="13" fill="#000" font-size="5" font-family="monospace" text-anchor="middle" font-weight="bold">EDIT●</text>
+              <rect x="106" y="5" width="22" height="10" rx="5" fill="#888" opacity=".35"/>
+
+              <rect x="24" y="30" width="118" height="105" rx="2" fill="#101010" stroke="rgba(120,120,120,0.2)" stroke-width="0.8"/>
+              <rect x="24" y="30" width="118" height="13" fill="rgba(120,120,120,0.08)"/>
+              <rect x="28" y="34" width="16" height="5" rx="2.5" fill="#888" opacity=".5"/>
+              <text x="48" y="39" fill="rgba(120,120,120,0.4)" font-size="4" font-family="monospace">NOTE</text>
+              <rect x="24" y="43" width="118" height="1" fill="rgba(120,120,120,0.12)"/>
+              <text x="28" y="51" fill="#aaa" font-size="5" font-family="monospace" font-weight="bold">SYSTEM STATUS</text>
+              <rect x="24" y="53" width="118" height="1" fill="rgba(120,120,120,0.12)"/>
+              <text x="28" y="63" fill="rgba(170,170,170,0.65)" font-size="4.5" font-family="monospace">cpu: 12%  mem: 4.2gb</text>
+              <text x="28" y="71" fill="rgba(170,170,170,0.65)" font-size="4.5" font-family="monospace">disk: 340gb free</text>
+              <text x="28" y="79" fill="rgba(170,170,170,0.65)" font-size="4.5" font-family="monospace">uptime: 14d 6h</text>
+              <text x="28" y="87" fill="rgba(170,170,170,0.65)" font-size="4.5" font-family="monospace">last backup: today</text>
+
+              <rect x="155" y="25" width="125" height="80" rx="2" fill="#101010" stroke="rgba(120,120,120,0.15)" stroke-width="0.8"/>
+              <rect x="155" y="25" width="125" height="13" fill="rgba(120,120,120,0.07)"/>
+              <rect x="159" y="29" width="16" height="5" rx="2.5" fill="#888" opacity=".5"/>
+              <text x="179" y="34" fill="rgba(120,120,120,0.4)" font-size="4" font-family="monospace">NOTE</text>
+              <rect x="155" y="38" width="125" height="1" fill="rgba(120,120,120,0.1)"/>
+              <text x="159" y="46" fill="#aaa" font-size="5" font-family="monospace" font-weight="bold">HOTKEYS</text>
+              <rect x="155" y="48" width="125" height="1" fill="rgba(120,120,120,0.1)"/>
+              <text x="159" y="58" fill="rgba(170,170,170,0.6)" font-size="4.5" font-family="monospace">ctrl+alt+t  terminal</text>
+              <text x="159" y="66" fill="rgba(170,170,170,0.6)" font-size="4.5" font-family="monospace">super+d     desktop</text>
+              <text x="159" y="74" fill="rgba(170,170,170,0.6)" font-size="4.5" font-family="monospace">super+e     files</text>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- theme chips -->
+    <div class="theme-strip" style="margin-bottom:36px;">
+      <div class="theme-chip" style="background:rgba(255,153,34,0.08);border-color:rgba(255,153,34,0.2);color:#FF9922;">
+        <div class="tc-dot" style="background:#FF9922;"></div>LCARS
+      </div>
+      <div class="theme-chip" style="background:rgba(200,200,200,0.06);color:#c8c8c8;">
+        <div class="tc-dot" style="background:#d4d4d4;"></div>VANILLA
+      </div>
+      <div class="theme-chip" style="background:rgba(42,37,32,0.08);color:#b0aa9f;">
+        <div class="tc-dot" style="background:#2a2520;"></div>PAPER
+      </div>
+      <div class="theme-chip" style="background:rgba(120,120,120,0.06);color:#888;">
+        <div class="tc-dot" style="background:#888;"></div>TERMINAL
+      </div>
+      <div class="theme-chip" style="background:rgba(170,100,220,0.08);color:#bb88ee;">
+        <div class="tc-dot" style="background:linear-gradient(135deg,#ff6644,#44aaff,#88ff44);"></div>+ RANDOM MIX
+      </div>
+      <div class="theme-chip" style="background:rgba(255,153,34,0.04);color:rgba(255,204,153,0.4);">
+        <div class="tc-dot" style="background:rgba(255,153,34,0.3);"></div>+ CUSTOM BUILDER
+      </div>
+    </div>
+
+    <div class="div"><div class="dt"></div><div class="ds"></div><div class="dl"></div><div class="ds"></div><div class="dt"></div></div>
+
+    <!-- FEATURES -->
+    <div class="section-lbl">CORE SYSTEMS</div>
+    <div class="panel-row">
+      <div class="panel"><div class="ph ph-or"><div class="ph-dot"></div>DESKTOP LAYER</div><div class="pb"><p>Runs behind all windows at the X11 desktop layer. The OS sees it as wallpaper. You see a pinboard. Toggle edit mode with <strong style="color:var(--orange)">E</strong> and it becomes interactive.</p></div></div>
+      <div class="panel"><div class="ph ph-pe"><div class="ph-dot"></div>CARDS</div><div class="pb"><ul><li>Text notes — inline editing, titled, color-coded</li><li>Image cards — URL, clipboard paste, or file drop</li><li>Drag from header strip, resize from corner</li><li>Infinite canvas, pan with Space + drag</li></ul></div></div>
+      <div class="panel"><div class="ph ph-bl"><div class="ph-dot"></div>THEMES</div><div class="pb"><ul><li>4 bundled themes out of the box</li><li>Simple 5-color picker — borders and grid auto-derived</li><li>Full CSS var editor for power users</li><li>Save, name, and recall custom themes</li><li>Random palette generator — one click</li></ul></div></div>
+    </div>
+
+    <div class="panel-row">
+      <div class="panel"><div class="ph ph-gr"><div class="ph-dot"></div>EXPORT / IMPORT</div><div class="pb"><p>Your board is plain JSON — readable, hackable, version-controllable. Export to back up or share layouts. Import to restore. Works across machines.</p></div></div>
+      <div class="panel"><div class="ph ph-ta"><div class="ph-dot"></div>EFFECTS</div><div class="pb"><ul><li>All effects off by default — zero idle cost</li><li>CSS transitions, drag lift, hover glow</li><li>Card appear animation, ambient pulse</li><li>Enable exactly what you want</li></ul></div></div>
+      <div class="panel"><div class="ph ph-re"><div class="ph-dot"></div>STACK</div><div class="pb"><ul><li>Tauri shell — Rust + WebKit</li><li>Zero JS frameworks, zero CDN calls</li><li>Single HTML file core — auditable</li><li>JSON persistence, no database</li></ul></div></div>
+    </div>
+
+    <div class="div"><div class="dl"></div><div class="dt"></div></div>
+
+    <div class="stat-strip">
+      <div class="stat">STATUS<span>ACTIVE DEVELOPMENT</span></div>
+      <div class="stat">VERSION<span>1.0.0</span></div>
+      <div class="stat">LICENSE<span>MIT</span></div>
+      <div class="stat">PLATFORM<span>LINUX X11</span></div>
+      <div class="stat">MAINTAINER<span>OCTAGG</span></div>
+    </div>
+
+  </div>
+
+  <div id="elbow-bl"></div>
+  <div id="btmbar">
+    <span class="btm-txt">ON SCREEN // DESKTOP REFERENCE LAYER // MIT LICENSE</span>
+    <div class="btm-sp"></div>
+    <div class="blink-dot"></div>
+    <span class="btm-txt">SYSTEM NOMINAL</span>
+  </div>
+</div>
+
+<script>
+let actx = null;
+function getCtx() { if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)(); return actx; }
+function _t(c,f,t,d,v){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;const n=c.currentTime;g.gain.setValueAtTime(0,n+t);g.gain.linearRampToValueAtTime(v,n+t+.008);g.gain.exponentialRampToValueAtTime(.001,n+t+d);o.start(n+t);o.stop(n+t+d+.02);}
+function chirp(){try{const c=getCtx();_t(c,880,0,.07,.1);_t(c,660,.09,.04,.07);_t(c,1100,.14,.18,.12);_t(c,1320,.16,.14,.05);}catch(e){}}
+document.querySelectorAll('.tb-pill,.cta').forEach(el=>el.addEventListener('click',chirp));
+window.addEventListener('load',()=>setTimeout(()=>{try{const c=getCtx();_t(c,880,0,.06,.06);_t(c,1100,.07,.1,.05);}catch(e){}},700));
+</script>
+</body>
+</html>

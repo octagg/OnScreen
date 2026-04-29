@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=On Screen
+Comment=Interactive desktop pinboard at the OS desktop layer
+Exec=/usr/bin/on-screen
+Icon=on-screen
+Terminal=false
+Categories=Utility;
+StartupNotify=false
+X-GNOME-Autostart-enabled=true

@@ -1,0 +1,75 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "devPath": "../src/index.html",
+    "distDir": "../src"
+  },
+  "package": {
+    "productName": "On Screen",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "fs": {
+        "all": true,
+        "scope": ["$APPDATA/*", "$HOME/.config/on-screen/*"]
+      },
+      "dialog": {
+        "all": true
+      },
+      "path": {
+        "all": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.octagg.onscreen",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "resources": [],
+      "externalBin": [],
+      "copyright": "",
+      "category": "Utility",
+      "shortDescription": "Interactive desktop pinboard at the OS desktop layer",
+      "longDescription": "On Screen is a lightweight interactive pinboard that lives at the X11 desktop layer — behind your windows, always available, never in the way. Pin notes, images, hotkey maps, and shortcuts directly onto your desktop.",
+      "deb": {
+        "depends": ["xdotool", "xprop"]
+      },
+      "appimage": {
+        "bundleMediaFramework": true
+      }
+    },
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' blob: data: https:; style-src 'unsafe-inline'; script-src 'self' 'unsafe-inline'"
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "label": "main",
+        "title": "On Screen",
+        "width": 1920,
+        "height": 1080,
+        "resizable": false,
+        "fullscreen": true,
+        "decorations": false,
+        "transparent": false,
+        "alwaysOnTop": false,
+        "skipTaskbar": true,
+        "visible": true,
+        "focus": false,
+        "url": "index.html"
+      }
+    ]
+  }
+}
