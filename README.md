@@ -159,7 +159,7 @@ MIT — do what you want, attribution appreciated.
 
 If On Screen saves you time or brain cycles, consider buying the maintainer a coffee.
 
-**[Ko-fi](https://ko-fi.com)** · **[GitHub Sponsors](https://github.com/sponsors)**
+**[Ko-fi](https://ko-fi.com/octagg)** · **[GitHub Sponsors](https://github.com/sponsors/octagg)** *(pending approval)*
 
 ---
 
